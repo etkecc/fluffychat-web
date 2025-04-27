@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "main" ]
 env:
-  app_version: v1.25.1
+  app_version: v1.26.0
 permissions:
   checks: write
   contents: write
