@@ -1,6 +1,13 @@
-FROM nginx:alpine
+FROM ghcr.io/static-web-server/static-web-server:2-alpine
 
-RUN rm /etc/nginx/conf.d/default.conf /etc/nginx/nginx.conf
-COPY ./nginx.conf /etc/nginx/nginx.conf
+# You can set environment variables as `docker run` arguments too,
+# full list: https://static-web-server.net/configuration/environment-variables/
+ENV SERVER_FALLBACK_PAGE=/var/public/index.html
+ENV SERVER_PORT=8080
+ENV SERVER_HEALTH=true
 
-COPY ./fluffychat-web /usr/share/nginx/html/
+HEALTHCHECK --interval=30s --timeout=10s CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
+USER $SERVER_USER_NAME:$SERVER_GROUP_NAME
+
+COPY --chown=$SERVER_USER_NAME:$SERVER_GROUP_NAME ./fluffychat-web /home/$SERVER_USER_NAME/public/
