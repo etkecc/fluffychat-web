@@ -1,8 +1,10 @@
 FROM ghcr.io/static-web-server/static-web-server:2-alpine
 
 # You can set environment variables as `docker run` arguments too,
-# full list: https://static-web-server.net/configuration/environment-variables/
+# full list: https://static-web-server.net/v2/configuration/environment-variables.html
 ENV SERVER_FALLBACK_PAGE=/var/public/index.html
+# fix unversioned js across builds, ref: https://github.com/etkecc/fluffychat-web/issues/40
+ENV SERVER_CACHE_CONTROL_HEADERS=false
 ENV SERVER_PORT=8080
 ENV SERVER_HEALTH=true
 
